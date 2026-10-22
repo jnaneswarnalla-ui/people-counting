@@ -1,0 +1,190 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f3f6fc">
+    <title>People Counting System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+    <a href="#" class="brand">
+        <span class="brand-icon">PC</span>
+        <span>
+            <strong>People Counting System</strong>
+            <small>Video Entry & Exit Analysis</small>
+        </span>
+    </a>
+    <span class="system-status">
+        <span class="status-dot"></span>
+        YOLO SYSTEM
+    </span>
+</header>
+
+<main class="container">
+
+    <section class="welcome">
+        <p class="eyebrow">AI VIDEO ANALYTICS</p>
+        <h1>People Counting Dashboard</h1>
+        <p>Select a video to analyze people entering and exiting an area.</p>
+    </section>
+
+    <section class="panel">
+        <div class="section-heading">
+            <div>
+                <h2>Input Video</h2>
+                <p>Choose the video you want to process.</p>
+            </div>
+            <span class="step-label">01 / INPUT</span>
+        </div>
+
+        <form id="videoForm">
+            <label for="videoInput" class="dropzone" id="dropzone">
+                <span class="upload-icon">↑</span>
+                <strong id="fileLabel">Choose a video from your computer</strong>
+                <span id="fileDetails">MP4, AVI, MOV or MKV · Up to 500 MB</span>
+                <span class="browse-button">Browse Videos</span>
+            </label>
+
+            <input
+                type="file"
+                id="videoInput"
+                accept=".mp4,.avi,.mov,.mkv,video/*"
+                hidden
+            >
+
+            <div class="selected-file" id="selectedFile" hidden>
+                <span class="file-icon">▶</span>
+                <div class="file-info">
+                    <strong id="selectedName"></strong>
+                    <small id="selectedSize"></small>
+                </div>
+                <button type="button" id="removeFile"
+                        class="remove-button" aria-label="Remove selected video">✕</button>
+            </div>
+
+            <div class="line-settings">
+                <label>
+                    Counting line
+                    <select id="lineDirection">
+                        <option value="horizontal">Horizontal (people walk up / down)</option>
+                        <option value="vertical">Vertical (people walk left / right)</option>
+                    </select>
+                </label>
+                <label>
+                    Line position: <output id="linePositionValue">50</output>%
+                    <input type="range" id="linePosition" min="10" max="90" value="50"
+                           oninput="document.getElementById('linePositionValue').textContent = this.value">
+                </label>
+                <label class="check">
+                    <input type="checkbox" id="invertDirection">
+                    Reverse IN / OUT
+                </label>
+                <small>Default: horizontal = downward is IN, vertical = right-to-left is IN.</small>
+            </div>
+
+            <div class="actions">
+                <button type="submit" id="processBtn" class="primary-button">
+                    Process Video <span>→</span>
+                </button>
+                <button type="button" id="clearBtn" class="secondary-button">
+                    Clear
+                </button>
+            </div>
+        </form>
+
+        <div id="progressArea" class="progress-area" hidden>
+            <div class="progress-heading">
+                <span id="progressText">Processing video...</span>
+                <span class="spinner"></span>
+            </div>
+            <div class="progress-track">
+                <div class="progress-bar"></div>
+            </div>
+            <p>Processing may take some time depending on video length.</p>
+        </div>
+
+        <p id="message" class="message" role="status" aria-live="polite"></p>
+    </section>
+
+    <section id="results" hidden>
+        <div class="results-heading">
+            <div>
+                <p class="eyebrow">ANALYSIS RESULTS</p>
+                <h2>Video Summary</h2>
+                <p id="resultVideoName" class="result-name"></p>
+            </div>
+            <span class="complete-badge">✓ Completed</span>
+        </div>
+
+        <div class="stats-grid">
+            <article class="stat-card blue">
+                <div class="stat-top">
+                    <span class="stat-label">Current Occupancy</span>
+                    <span class="stat-icon">◎</span>
+                </div>
+                <strong id="occupancy">—</strong>
+                <span class="stat-foot">People inside</span>
+            </article>
+
+            <article class="stat-card green">
+                <div class="stat-top">
+                    <span class="stat-label">Total Entries</span>
+                    <span class="stat-icon">↘</span>
+                </div>
+                <strong id="entries">—</strong>
+                <span class="stat-foot">Inbound crossings</span>
+            </article>
+
+            <article class="stat-card orange">
+                <div class="stat-top">
+                    <span class="stat-label">Total Exits</span>
+                    <span class="stat-icon">↗</span>
+                </div>
+                <strong id="exits">—</strong>
+                <span class="stat-foot">Outbound crossings</span>
+            </article>
+        </div>
+
+        <section class="panel output-panel">
+            <div class="section-heading">
+                <div>
+                    <h2>Processed Output Video</h2>
+                    <p>Watch the video with detection and counting annotations.</p>
+                </div>
+                <span class="step-label">02 / OUTPUT</span>
+            </div>
+
+            <div id="outputPlaceholder" class="video-placeholder">
+                <span class="play-icon">▶</span>
+                <strong>Your processed video will appear here</strong>
+                <p>Select and process a video to view the results.</p>
+            </div>
+
+            <video
+                id="outputVideo"
+                controls
+                playsinline
+                preload="metadata"
+                hidden
+            ></video>
+
+            <a id="downloadBtn" class="download-button"
+               download="processed_video.mp4" hidden>
+                ↓ Download Processed Video
+            </a>
+        </section>
+    </section>
+
+    <footer>
+        <p>People Counting System <span>·</span> YOLO <span>·</span> OpenCV</p>
+    </footer>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
